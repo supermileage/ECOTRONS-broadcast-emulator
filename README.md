@@ -15,3 +15,5 @@ The following packet is broadcast over RS232 at a rate of 115200, 8 data bits, n
 | 26       | byte | Checksum                |
 
 The checksum is the sum of bytes 0-25.
+
+The byte ordering is in big endian.
