@@ -1,6 +1,6 @@
-# ECOTRONS Broadcast Simulator
+# Telemetry Emulator
 
-This is a simple sketch for an Arduino (or any PlatformIO with Arduino framework-compatible MCU) to simulate an ECOTRONS ECU. It's tailored for V1.2 of the ECU; later versions have different packet lengths. 
+This is a simple sketch for an Arduino (or any PlatformIO with Arduino framework-compatible MCU) to simulate an ECOTRONS ECU and CAN messages. The Ecotrons messages are tailored for V1.2 of the ECU; later versions have different packet lengths. 
 
 The following packet is broadcast over RS232 at a rate of 115200, 8 data bits, no partiy, and 1 stop bit every 100ms.
 
