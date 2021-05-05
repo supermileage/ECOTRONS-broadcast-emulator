@@ -1,6 +1,6 @@
-#include <Arduino.h>
-#include <mcp_can.h>
-#include <SPI.h>
+#include "Arduino.h"
+#include "SPI.h"
+#include "mcp2515_can.h"
 
 #define ECU_PACKET_SIZE         27
 #define ECU_UPDATE_MS           5000
@@ -11,18 +11,21 @@
 #define ECU_SERVICE_ID          0x50
 #define ECU_LED_PIN             2
 
-#define CAN_CS_PIN      10
-#define CAN_UPDATE_MS   3000
-#define CAN_ID          0x00
-#define CAN_FRAME       0
-#define CAN_DATA_LENGTH 8
-#define CAN_LED_PIN     3
+#define CAN_CS_PIN          10
+#define CAN_LED_PIN         3
+#define CAN_UPDATE_MS       300
+#define CAN_FRAME           0
+#define CAN0_ID             0x00
+#define CAN0_DATA_LENGTH    8
+#define CAN1_ID             0xA2
+#define CAN1_DATA_LENGTH    5
 
 uint8_t ecu_data[ECU_PACKET_SIZE];
 unsigned long long ecu_last_update;
 
-MCP_CAN CAN0(CAN_CS_PIN); 
-unsigned char can_data[8] = {0, 1, 2, 3, 4, 5, 6, 7};
+mcp2515_can CAN(CAN_CS_PIN); 
+unsigned char can0_data[CAN0_DATA_LENGTH] = {0, 1, 2, 3, 4, 5, 6, 7};
+unsigned char can1_data[CAN1_DATA_LENGTH] = {4, 3, 2, 1, 0};
 unsigned long long can_last_update;
 
 void setup() {
@@ -38,7 +41,7 @@ void setup() {
 
     // CAN begin
     SPI.begin();
-    CAN0.begin(CAN_125KBPS,MCP_8MHz) == CAN_OK;
+    CAN.begin(CAN_125KBPS,MCP_8MHz);
 
     ecu_last_update = millis();
     can_last_update = millis();
@@ -75,7 +78,8 @@ void loop() {
     // Check for and send CAN update
     if (millis() - can_last_update >= CAN_UPDATE_MS) {
         can_last_update = millis();
-        CAN0.sendMsgBuf(CAN_ID, CAN_FRAME, CAN_DATA_LENGTH, can_data);  
+        CAN.sendMsgBuf(CAN0_ID, CAN_FRAME, CAN0_DATA_LENGTH, can0_data);  
+        CAN.sendMsgBuf(CAN1_ID, CAN_FRAME, CAN1_DATA_LENGTH, can1_data);  
 
         digitalWrite(CAN_LED_PIN, HIGH);
     } else {
