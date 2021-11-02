@@ -5,8 +5,9 @@
 #include "mcp2515_can.h"
 
 #define CAN_CS_PIN          10
-#define CAN_UPDATE_MS       300
+#define CAN_UPDATE_MS       250
 #define CAN_FRAME           0
+
 #define CAN0_ID             0x00
 #define CAN0_DATA_LENGTH    8
 #define CAN1_ID             0xA2
