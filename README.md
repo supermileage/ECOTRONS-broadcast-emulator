@@ -1,6 +1,9 @@
 # Telemetry Emulator
 
-This is a simple sketch for an Arduino (or any PlatformIO with Arduino framework-compatible MCU) to simulate an ECOTRONS ECU and CAN messages. The Ecotrons messages are tailored for V1.2 of the ECU; later versions have different packet lengths. 
+This is a simple sketch for an Arduino (or similar MCU) to simulate and output various messages that can be received by the Telemetry module. The simulator is modular, and new simulator classes can be created as subclasses of _Sim_.
+
+## ECU Simulator (SimEcu)
+Simulates UART messages coming out of the Ecotrons ECU. The Ecotrons messages are tailored for V1.2 of the ECU; later versions have different packet lengths. 
 
 The following packet is broadcast over RS232 at a rate of 115200, 8 data bits, no partiy, and 1 stop bit every 100ms.
 
@@ -17,3 +20,7 @@ The following packet is broadcast over RS232 at a rate of 115200, 8 data bits, n
 The checksum is the sum of bytes 0-25.
 
 The byte ordering is in big endian.
+
+## CAN Simulator (SimCan)
+
+Currently supports sending out 2 messages on fixed interval. 
