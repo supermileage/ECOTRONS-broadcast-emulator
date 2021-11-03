@@ -4,7 +4,7 @@
 #include "Arduino.h"
 #include "Sim.h"
 
-#define BAUD_RATE               115200
+#define ECU_BAUD_RATE           115200
 #define ECU_PACKET_SIZE         27
 #define ECU_UPDATE_MS           100
 #define ECU_HEADER_1            0x80
@@ -18,7 +18,7 @@ class SimEcu : public Sim {
         /**
          * Constructor 
          **/
-        SimEcu();
+        SimEcu(Stream &serial);
 
         void begin();
 
@@ -27,6 +27,7 @@ class SimEcu : public Sim {
         String getHumanName();
 
     private:
+        Stream* _serial;
         uint8_t _ecu_data[ECU_PACKET_SIZE];
         unsigned long long _ecu_last_update;
 

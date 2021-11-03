@@ -1,11 +1,10 @@
 #include "SimEcu.h"
 
-SimEcu::SimEcu() {}
+SimEcu::SimEcu(Stream &serial) {
+    _serial = &serial;
+}
 
 void SimEcu::begin(){
-    // 115200 baud rate, 8 data bits, no parity, 1 stop bit per datasheet
-    Serial.begin(BAUD_RATE, SERIAL_8N1);
-
     _ecu_data[0] = ECU_HEADER_1;
     _ecu_data[1] = ECU_HEADER_2;
     _ecu_data[2] = ECU_HEADER_3;
@@ -21,7 +20,7 @@ void SimEcu::handle(){
         _randomizeData();
 
         for (int i = 0; i < ECU_PACKET_SIZE; i++) {
-            Serial.write(_ecu_data[i]);
+            _serial->write(_ecu_data[i]);
         }
     } 
 }

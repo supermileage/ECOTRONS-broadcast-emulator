@@ -1,7 +1,7 @@
-#include "Arduino.h"
-
 #ifndef _SIM_H_
 #define _SIM_H_
+
+#include "Arduino.h"
 
 class Sim {
     public:

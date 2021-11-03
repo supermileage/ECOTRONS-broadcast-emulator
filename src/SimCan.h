@@ -16,7 +16,7 @@
 class SimCan : public Sim {
     public:
 
-        SimCan();
+        SimCan(uint8_t ledPin);
 
         void begin();
 
@@ -29,6 +29,7 @@ class SimCan : public Sim {
         unsigned char _can0_data[CAN0_DATA_LENGTH] = {0, 1, 2, 3, 4, 5, 6, 7};
         unsigned char _can1_data[CAN1_DATA_LENGTH] = {4, 3, 2, 1, 0};
         unsigned long long _can_last_update;
+        uint8_t _ledPin;
 
 };
 
