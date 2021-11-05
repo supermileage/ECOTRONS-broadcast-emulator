@@ -1,7 +1,7 @@
 #include "SimEcu.h"
 
-SimEcu::SimEcu(Stream &serial) {
-    _serial = &serial;
+SimEcu::SimEcu(Stream *serial) {
+    _serial = serial;
 }
 
 void SimEcu::begin(){

@@ -2,16 +2,24 @@
 #include "SimEcu.h"
 #include "SimCan.h"
 
-#define BUILTIN_LED 17
+#define CAN_DEBUG 0
 
-SimEcu ecu(Serial);
-SimCan can(BUILTIN_LED);
-
-Sim *simulators[] = {&ecu, &can};
+#if CAN_DEBUG
+    SimCan can(&Serial);
+    Sim *simulators[] = {&can};
+#else
+    SimEcu ecu(&Serial);
+    SimCan can;
+    Sim *simulators[] = {&ecu, &can};
+#endif
 
 void setup() {
-    // 115200 baud rate, 8 data bits, no parity, 1 stop bit per datasheet
-    Serial.begin(ECU_BAUD_RATE, SERIAL_8N1);
+    if(CAN_DEBUG){
+        Serial.begin(CAN_DEBUG_BAUD_RATE);
+    }else{
+        // 115200 baud rate, 8 data bits, no parity, 1 stop bit per datasheet
+        Serial.begin(ECU_BAUD_RATE, SERIAL_8N1);
+    }
 
     // Start all simulators
     for(Sim *s : simulators){

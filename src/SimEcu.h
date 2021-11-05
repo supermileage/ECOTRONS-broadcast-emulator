@@ -17,8 +17,10 @@ class SimEcu : public Sim {
     public:
         /**
          * Constructor 
+         * 
+         * @param serial port for outputting ECU data
          **/
-        SimEcu(Stream &serial);
+        SimEcu(Stream *serial);
 
         void begin();
 
@@ -27,7 +29,7 @@ class SimEcu : public Sim {
         String getHumanName();
 
     private:
-        Stream* _serial;
+        Stream *_serial;
         uint8_t _ecu_data[ECU_PACKET_SIZE];
         unsigned long long _ecu_last_update;
 
