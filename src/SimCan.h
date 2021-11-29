@@ -4,6 +4,8 @@
 #include "Sim.h"
 #include "mcp2515_can.h"
 
+// This struct contains all the components of a CAN message. dataLength must be <= 8, 
+// and the first [dataLength] positions of data[] must contain valid data
 struct CanMessage {
     uint32_t id;
     uint8_t dataLength;
@@ -16,11 +18,11 @@ struct CanMessage {
 #define CAN_FRAME           0
 
 // Transmit Settings
-#define CAN_TRANSMIT_INTERVAL       200
+#define CAN_TRANSMIT_INTERVAL       2000
 
 // Transmit Messages
-const CanMessage TEST1 = {0x14, 8, {0, 1, 2, 3, 4, 5, 6, 7}};
-const CanMessage TEST2 = {0x2D, 8, {7, 6, 5, 4, 3, 2, 1, 0}};
+const CanMessage TEST1 = {0x14, 8, {0x15, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}};
+const CanMessage TEST2 = {0x2D, 8, {0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01, 0x00}};
 const CanMessage TRANSMIT_MSGS[] = {TEST1, TEST2};
 
 // BMS Settings
@@ -58,8 +60,6 @@ const uint8_t BMS_RESPONSE_DATA[NUM_BMS_PROPERTIES][4] =   {{0x00,0x00,0x40,0x42
                                                             {0x04,0x01,0x01,0x00},    // 260 (Battery Temp #1)
                                                             {0x18,0x01,0x02,0x00}};   // 280 (Battery Temp #2)
 
-
-
 class SimCan : public Sim {
     public:
 
@@ -86,10 +86,31 @@ class SimCan : public Sim {
         Stream *_serial = NULL;
         unsigned long long _last_transmit;
 
+        /**
+         * Transmit all CAN messages in TRANSMIT_MSGS array, emulating CAN Accessories
+         **/
         void _transmit();
-        void _receive();
-        void _processCanRequest(uint8_t len, uint8_t buf[]);
 
+        /**
+         * Print all new CAN messages over serial (if enabled). If a BMS request is received, 
+         * respond to it.
+         **/
+        void _receive();
+
+        /**
+         * Respond to a BMS request with some mock (static) data, emulating the BMS
+         * 
+         * @param len length in bytes of received message
+         * @param buf data buffer
+         **/       
+        void _processBmsRequest(uint8_t len, uint8_t buf[]);
+
+        /**
+         * Convert error code into descriptive error message
+         * 
+         * @param errorCode
+         * @return error message
+         **/ 
         String _getErrorDescription(uint8_t errorCode);
 
 };

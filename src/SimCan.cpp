@@ -39,7 +39,9 @@ void SimCan::_transmit() {
         for(CanMessage msg : TRANSMIT_MSGS){
             uint8_t error = _can->sendMsgBuf(msg.id, CAN_FRAME, msg.dataLength, msg.data);
             if(_serial){
-                _serial->println("CAN Msg Sent - ID: " + String(msg.id) + " - Status: " + _getErrorDescription(error));
+                _serial->print("CAN MESSAGE SENT - ID: 0x"); 
+                _serial->print(msg.id, HEX); 
+                _serial->println(" - Status: " + _getErrorDescription(error));
             }
         }
 
@@ -54,15 +56,16 @@ void SimCan::_receive(){
     uint16_t canId = _can->getCanId();
 
     if(canId == BMS_REQUEST_ID){
-        _processCanRequest(len, buf);
+        _processBmsRequest(len, buf);
     }
 
     if(_serial){
         _serial->println("-----------------------------");
-        _serial->print("Get data from ID: 0x");
+        _serial->print("CAN MESSAGE RECEIVED - ID: 0x");
         _serial->println(canId, HEX);
 
         for (int i = 0; i < len; i++) { // print the data
+            _serial->print("0x");
             _serial->print(buf[i], HEX);
             _serial->print("\t");
         }
@@ -70,7 +73,7 @@ void SimCan::_receive(){
     }
 }
 
-void SimCan::_processCanRequest(uint8_t len, uint8_t buf[]){
+void SimCan::_processBmsRequest(uint8_t len, uint8_t buf[]){
 
     if(_serial) _serial->println("BMS CAN REQUEST RECEIVED!");
     
@@ -95,7 +98,7 @@ void SimCan::_processCanRequest(uint8_t len, uint8_t buf[]){
                 response[j+2] = BMS_RESPONSE_DATA[i][j];
             }
             // Send the message
-            uint8_t error = _can->sendMsgBuf(BMS_RESPONSE_ID, CAN_FRAME, BMS_RESPONSE_LENGTH[i+2], response);
+            uint8_t error = _can->sendMsgBuf(BMS_RESPONSE_ID, CAN_FRAME, BMS_RESPONSE_LENGTH[i]+2, response);
             if(_serial){
                 _serial->println("BMS RESPONSE SENT - PROPERTY: " + String(BMS_PROPERTY[i]) + " - Status: " + _getErrorDescription(error));
             }
