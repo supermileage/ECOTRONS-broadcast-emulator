@@ -78,29 +78,23 @@ void SimCan::_processBmsRequest(uint8_t len, uint8_t buf[]){
     if(_serial) _serial->println("BMS CAN REQUEST RECEIVED!");
     
     // Check to make sure request length is correct
-    if (len != 8 && _serial){
+    if (len != BMS_REQUEST_LENGTH && _serial){
         _serial->println("ERROR: BMS CAN REQUEST TOO SHORT!");
     }
 
     bool reqFulfilled = false;
     // Check all the BMS properties that we're interested in and see if the first byte matches its id
-    for(uint8_t i = 0; i < NUM_BMS_PROPERTIES; i++){
-        if(buf[0] == BMS_PROPERTY[i]){
+    for(CanMessage m : BMS_RESPONSE){
+        if(buf[0] == m.data[0]){
             reqFulfilled = true;
-            // Create a response
-            uint8_t response[6];
-            // First byte is 0x01 to indicate OK
-            response[0] = 0x01;
-            // Second byte is the BMS property id
-            response[1] = BMS_PROPERTY[i];
-            // Next 2-4 bytes are the data
-            for(uint8_t j = 0; j < BMS_RESPONSE_LENGTH[i]; j++){
-                response[j+2] = BMS_RESPONSE_DATA[i][j];
-            }
+            // Introduce a random delay from 0-4 ms
+            delay(random(0,4));
             // Send the message
-            uint8_t error = _can->sendMsgBuf(BMS_RESPONSE_ID, CAN_FRAME, BMS_RESPONSE_LENGTH[i]+2, response);
+            uint8_t error = _can->sendMsgBuf(BMS_RESPONSE_ID, CAN_FRAME, m.dataLength, m.data);
             if(_serial){
-                _serial->println("BMS RESPONSE SENT - PROPERTY: " + String(BMS_PROPERTY[i]) + " - Status: " + _getErrorDescription(error));
+                _serial->print("BMS RESPONSE SENT - PROPERTY: 0x"); 
+                _serial->print(m.data[0], HEX);
+                _serial->println(" - Status: " + _getErrorDescription(error));
             }
         }
     }
