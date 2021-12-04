@@ -2,7 +2,7 @@
 #include "SimEcu.h"
 #include "SimCan.h"
 
-#define CAN_DEBUG 0
+#define CAN_DEBUG 1
 
 #if CAN_DEBUG
     SimCan can(&Serial);
