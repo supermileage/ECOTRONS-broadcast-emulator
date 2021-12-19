@@ -3,6 +3,7 @@
 
 #include "Sim.h"
 #include "mcp2515_can.h"
+#include "CanBehavior.h"
 
 // This struct contains all the components of a CAN message. dataLength must be <= 8, 
 // and the first [dataLength] positions of data[] must contain valid data
@@ -53,23 +54,24 @@ class SimCan : public Sim {
          * 
          * @param serial port for outputting debug data
          **/
-        SimCan(Stream *serial);
+        SimCan(Stream *serial, CanBehavior behavior);
 
         void begin();
 
-        void handle();
+        virtual void handle();
 
-        String getHumanName();
+        virtual String getHumanName();
 
     private:
         mcp2515_can* _can; 
         Stream *_serial = NULL;
         unsigned long long _last_transmit;
+        CanBehavior _behavior;
 
         /**
          * Transmit all CAN messages in TRANSMIT_MSGS array, emulating CAN Accessories
          **/
-        void _transmit();
+        virtual void _transmit();
 
         /**
          * Print all new CAN messages over serial (if enabled). If a BMS request is received, 
