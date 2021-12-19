@@ -4,7 +4,7 @@ SimCan::SimCan() {
     _can = new mcp2515_can(CAN_CS_PIN);
 }
 
-SimCan::SimCan(Stream *serial, CanBehavior behavior) {
+SimCan::SimCan(Stream *serial, CanBehavior* behavior) {
     _serial = serial;
     _can = new mcp2515_can(CAN_CS_PIN);
     _behavior = behavior;
@@ -16,7 +16,7 @@ void SimCan::begin(){
     uint8_t error = _can->begin(CAN_500KBPS,MCP_8MHz);
 
     if(_serial){
-        _serial->println("CAN Init Status: " + _getErrorDescription(error));
+        _serial->println("CAN Init Status: " + getErrorDescription(error));
     }
 
     _last_transmit = millis();
@@ -40,7 +40,7 @@ String SimCan::getHumanName() {
     return "CAN";
 }
 
-String SimCan::_getErrorDescription(uint8_t errorCode){
+String SimCan::getErrorDescription(uint8_t errorCode){
     switch(errorCode){
         case CAN_OK: 
             return "CAN OK";

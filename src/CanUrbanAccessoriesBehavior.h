@@ -7,12 +7,12 @@ class CanUrbanAccessoriesBehavior : public CanBehavior {
 	public:
 		CanUrbanAccessoriesBehavior() { }
 
-		void transmit(mcp2515_can can);
+		void transmit(mcp2515_can* can);
 
-		void receive(mcp2515_can can) { }
+		void receive(mcp2515_can* can) { }
 	
 	protected:
-		void _randomizeMessages();
+		void _randomizeMessage(CanMessage& message);
 };
 
 #endif

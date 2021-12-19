@@ -9,8 +9,8 @@
 #if CAN_DEBUG
     CanBmsBehavior bmsBehavior;
     CanUrbanAccessoriesBehavior urbanBehavior;
-    SimCan canBms(&Serial, bmsBehavior);
-    SimCan canUrban(&Serial, urbanBehavior);
+    SimCan canBms(&Serial, &bmsBehavior);
+    SimCan canUrban(&Serial, &urbanBehavior);
     Sim *simulators[] = {&canBms, &canUrban};
 #else
     SimEcu ecu(&Serial);

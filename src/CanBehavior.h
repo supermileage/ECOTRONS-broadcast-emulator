@@ -4,20 +4,22 @@
 #include "SimCan.h"
 #include "mcp2515_can.h"
 
+class SimCan;
+
 class CanBehavior {
 	public:
 		CanBehavior() { }
 
 		~CanBehavior() { }
 
-		virtual void transmit(mcp2515_can can) = 0;
+		virtual void transmit(mcp2515_can* can) = 0;
 
-		virtual void receive(mcp2515_can can) = 0;
+		virtual void receive(mcp2515_can* can) = 0;
 
-		void setSerial(Serial* serial) : _serial(serial) { }
-		
+		void setSerial(Stream* serial) { _serial = serial; }
+		 
 	protected:
-		Serial _serial = NULL;
+		Stream* _serial = NULL;
 };
 
 #endif
