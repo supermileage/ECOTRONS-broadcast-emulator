@@ -8,7 +8,7 @@ const CanMessage URBAN_MSGS[] = {TEST1, TEST2};
 const int MIN_DATA_LENGTH = 0x2;
 const int MAX_DATA_LENGTH = 0x8;
 const int MIN_STATUS_ID = 0x0;
-const int MAX_STATUS_ID = 0xA;
+const int MAX_STATUS_ID = 0xB;
 
 void CanUrbanAccessoriesBehavior::transmit(mcp2515_can* can) {
 	for(CanMessage msg : URBAN_MSGS) {
@@ -19,13 +19,11 @@ void CanUrbanAccessoriesBehavior::transmit(mcp2515_can* can) {
 }
 
 void CanUrbanAccessoriesBehavior::_randomizeMessage(CanMessage& message) {
-	randomSeed(analogRead(0));
-
 	message.dataLength = random(MIN_DATA_LENGTH, MAX_DATA_LENGTH);
 
 	// randomize data byes in can message
 	for (uint8_t i = 0; i < message.dataLength; i++) {
 		char dataByte = random(MIN_STATUS_ID, MAX_STATUS_ID);
-		message.data[i] = (dataByte << 1) + (dataByte % 2);
+		message.data[i] = (dataByte << 1) + random(0, 2);
 	}
 }
