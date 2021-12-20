@@ -23,7 +23,6 @@ class Sim {
          * @return Human name for this simulator type
          * */
         virtual String getHumanName() = 0;
-
     private:
 
 };

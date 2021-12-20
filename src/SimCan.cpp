@@ -4,8 +4,7 @@ SimCan::SimCan() {
     _can = new mcp2515_can(CAN_CS_PIN);
 }
 
-SimCan::SimCan(Stream *serial, CanBehavior* behavior) {
-    _serial = serial;
+SimCan::SimCan(CanBehavior* behavior) {
     _can = new mcp2515_can(CAN_CS_PIN);
     _behavior = behavior;
 }
@@ -15,8 +14,8 @@ void SimCan::begin(){
     SPI.begin();
     uint8_t error = _can->begin(CAN_500KBPS,MCP_8MHz);
 
-    if(_serial){
-        _serial->println("CAN Init Status: " + getErrorDescription(error));
+    if(DEBUG_SERIAL){
+        Serial.println("CAN Init Status: " + getErrorDescription(error));
     }
 
     _last_transmit = millis();
@@ -38,6 +37,29 @@ void SimCan::handle(){
 
 String SimCan::getHumanName() {
     return "CAN";
+}
+
+void SimCan::serialTransmitMessage(CanMessage msg, uint8_t error) {
+    if(DEBUG_SERIAL){
+        Serial.print("CAN MESSAGE SENT - ID: 0x"); 
+        Serial.print(msg.id, HEX); 
+        Serial.println(" - Status: " + getErrorDescription(error));
+    }
+}
+
+void SimCan::serialReceiveMessage(uint16_t id, uint8_t len, CanBuffer buf) {
+    if(DEBUG_SERIAL){
+        Serial.println("-----------------------------");
+        Serial.print("CAN MESSAGE RECEIVED - ID: 0x");
+        Serial.println(id, HEX);
+
+        for (int i = 0; i < len; i++) { // print the data
+            Serial.print("0x");
+            Serial.print(buf[i], HEX);
+            Serial.print("\t");
+        }
+        Serial.println();
+    }
 }
 
 String SimCan::getErrorDescription(uint8_t errorCode){

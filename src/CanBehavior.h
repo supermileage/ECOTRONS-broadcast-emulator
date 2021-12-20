@@ -16,10 +16,8 @@ class CanBehavior {
 
 		virtual void receive(mcp2515_can* can) = 0;
 
-		void setSerial(Stream* serial) { _serial = serial; }
-		 
 	protected:
-		Stream* _serial = NULL;
+		SimCan* _owner;
 };
 
 #endif
