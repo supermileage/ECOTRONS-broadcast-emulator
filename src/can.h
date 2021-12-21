@@ -4,15 +4,6 @@
 #include "Arduino.h"
 
 namespace can {
-	// This struct contains all the components of a CAN message. dataLength must be <= 8, 
-	// and the first [dataLength] positions of data[] must contain valid data
-	typedef uint8_t CanBuffer[8];
-	struct CanMessage {
-			uint32_t id;
-			uint8_t dataLength;
-			CanBuffer data;
-	};
-
 	// Turn on/off serial debugging
 	#define DEBUG_SERIAL 1
 
@@ -23,6 +14,15 @@ namespace can {
 
 	// Transmit Settings
 	#define CAN_TRANSMIT_INTERVAL 500
+
+	// This struct contains all the components of a CAN message. dataLength must be <= 8, 
+	// and the first [dataLength] positions of data[] must contain valid data
+	typedef uint8_t CanBuffer[8];
+	struct CanMessage {
+			uint32_t id;
+			uint8_t dataLength;
+			CanBuffer data;
+	};
 
 	class Delegate {
 		public:

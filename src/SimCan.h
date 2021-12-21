@@ -38,13 +38,22 @@ class SimCan : public Sim {
          **/ 
         static String getErrorDescription(uint8_t errorCode);
 
+    private:
+        mcp2515_can* _can;
+        unsigned long long _last_transmit;
+        CanBehavior* _behavior;
+
+        void _transmit();
+        
+        void _receive();
+
         /**
          * @brief Serial output message for when can messages are transmitted
          * 
          * @param msg the message being tranmsmitted
          * @param error the transmission error message from mcp2515_can
          */
-        static void _serialTransmitMessage(const CanMessage& msg, uint8_t error, String serialMsg);
+        static void _serialSendMessage(const CanMessage& msg, uint8_t error, String serialMsg);
 
         /**
          * @brief Serial output message for when can messages are received
@@ -54,15 +63,6 @@ class SimCan : public Sim {
          * @param buf data from received message
          */
         static void _serialReceiveMessage(const CanMessage& msg);
-
-    private:
-        mcp2515_can* _can;
-        unsigned long long _last_transmit;
-        CanBehavior* _behavior;
-
-        void _transmit();
-
-        void _receive();
 
         // SimCan delegate class sender
         class Sender : public Delegate {

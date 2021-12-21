@@ -56,10 +56,10 @@ String SimCan::getHumanName() {
 
 void SimCan::send(CanMessage msg, String serialMsg) {
     uint8_t error = _can->sendMsgBuf(msg.id, CAN_FRAME, msg.dataLength, msg.data);
-    _serialTransmitMessage(msg, error, serialMsg);
+    _serialSendMessage(msg, error, serialMsg);
 }
 
-void SimCan::_serialTransmitMessage(const CanMessage& msg, uint8_t error, String serialMsg) {
+void SimCan::_serialSendMessage(const CanMessage& msg, uint8_t error, String serialMsg) {
     if(DEBUG_SERIAL){
         Serial.print(serialMsg +  " - ID: 0x"); 
         Serial.print(msg.id, HEX); 
