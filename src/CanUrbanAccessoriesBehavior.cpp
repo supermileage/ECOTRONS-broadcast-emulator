@@ -10,11 +10,10 @@ const int MAX_DATA_LENGTH = 0x8;
 const int MIN_STATUS_ID = 0x0;
 const int MAX_STATUS_ID = 0xB;
 
-void CanUrbanAccessoriesBehavior::transmit(mcp2515_can* can) {
+void CanUrbanAccessoriesBehavior::transmit() {
 	for(CanMessage msg : URBAN_MSGS) {
 		_randomizeMessage(msg);
-        uint8_t error = can->sendMsgBuf(msg.id, CAN_FRAME, msg.dataLength, msg.data);
-		SimCan::serialTransmitMessage(msg, error);
+        _sender->send(msg, String("CAN MESSAGE SENT"));
     }
 }
 

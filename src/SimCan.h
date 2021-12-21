@@ -14,6 +14,22 @@ struct CanMessage {
     CanBuffer data;
 };
 
+class SimCan;
+
+// SimCan delegate class sender
+class Sender {
+    public:
+        Sender(SimCan* owner) : _owner(owner) { }
+
+        ~Sender() { }
+
+        void send(CanMessage msg, String serialMsg);
+    
+    private:
+        SimCan* _owner;
+
+};
+
 // Turn on/off serial debugging
 #define DEBUG_SERIAL 1
 
@@ -45,6 +61,8 @@ class SimCan : public Sim {
 
         void handle();
 
+        void send(CanMessage msg, String serialMsg);
+
         String getHumanName();
 
         /**
@@ -61,7 +79,7 @@ class SimCan : public Sim {
          * @param msg the message being tranmsmitted
          * @param error the transmission error message from mcp2515_can
          */
-        static void serialTransmitMessage(CanMessage msg, uint8_t error);
+        static void serialTransmitMessage(const CanMessage& msg, uint8_t error, String serialMsg);
 
         /**
          * @brief Serial output message for when can messages are received
@@ -70,7 +88,7 @@ class SimCan : public Sim {
          * @param len length of received message
          * @param buf data from received message
          */
-        static void serialReceiveMessage(uint16_t id, uint8_t len, CanBuffer buf);
+        static void serialReceiveMessage(const CanMessage& msg);
 
     private:
         mcp2515_can* _can;

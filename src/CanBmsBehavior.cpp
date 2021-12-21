@@ -15,44 +15,29 @@ const CanMessage BMS_RESPONSE[] =   {{BMS_RESPONSE_ID, 6, {0x14,0x01,0x00,0x00,0
                                     {BMS_RESPONSE_ID, 5, {0x1B,0x01,0x04,0x01,0x01}},       // Battery Temp #1      - 260
                                     {BMS_RESPONSE_ID, 5, {0x1B,0x01,0x18,0x01,0x02}}};      // Battery Temp #2      - 280
 
-void CanBmsBehavior::receive(mcp2515_can* can){
-    uint8_t len = 0;
-    CanBuffer buf;
-
-    can->readMsgBuf(&len, buf); 
-
-    uint16_t canId = can->getCanId();
-
-    if(canId == BMS_REQUEST_ID){
-        _processBmsRequest(can, len, buf);
+void CanBmsBehavior::receive(CanMessage& msg){
+    if(msg.id == BMS_REQUEST_ID){
+        _processBmsRequest(msg);
     }
-
-    SimCan::serialReceiveMessage(canId, len, buf);
 }
 
-void CanBmsBehavior::_processBmsRequest(mcp2515_can* can, uint8_t len, CanBuffer buf){
-
+void CanBmsBehavior::_processBmsRequest(CanMessage& msg){
     if(DEBUG_SERIAL) Serial.println("BMS CAN REQUEST RECEIVED!");
     
     // Check to make sure request length is correct
-    if (len != BMS_REQUEST_LENGTH && DEBUG_SERIAL){
+    if (msg.dataLength != BMS_REQUEST_LENGTH && DEBUG_SERIAL){
         Serial.println("ERROR: BMS CAN REQUEST TOO SHORT!");
     }
 
     bool reqFulfilled = false;
     // Check all the BMS properties that we're interested in and see if the first byte matches its id
     for(CanMessage m : BMS_RESPONSE){
-        if(buf[0] == m.data[0]){
+        if(msg.data[0] == m.data[0]){
             reqFulfilled = true;
             // Introduce a random delay from 0-4 ms
             delay(random(0,4));
             // Send the message
-            uint8_t error = can->sendMsgBuf(BMS_RESPONSE_ID, CAN_FRAME, m.dataLength, m.data);
-            if(DEBUG_SERIAL){
-                Serial.print("BMS RESPONSE SENT - PROPERTY: 0x"); 
-                Serial.print(m.data[0], HEX);
-                Serial.println(" - Status: " + SimCan::getErrorDescription(error));
-            }
+            _sender->send(m, String("BMS RESPONSE SENT"));
         }
     }
 

@@ -7,6 +7,7 @@ SimCan::SimCan() {
 SimCan::SimCan(CanBehavior* behavior) {
     _can = new mcp2515_can(CAN_CS_PIN);
     _behavior = behavior;
+    _behavior->setSender(new Sender(this));
 }
 
 void SimCan::begin(){
@@ -23,39 +24,47 @@ void SimCan::begin(){
 
 void SimCan::handle(){
     // Send CAN Messages
-    if (millis() - _last_transmit >= CAN_TRANSMIT_INTERVAL) {
+    if (millis() - _last_transmit >= CAN_TRANSMIT_INTERVAL){
         _last_transmit = millis();
-        _behavior->transmit(_can);
+        _behavior->transmit();
     }
 
     // Listen for CAN messages
     if (_can->checkReceive() == CAN_MSGAVAIL) {
-        _behavior->receive(_can);
+        CanMessage message;
+        message.dataLength = 0;
+        _can->readMsgBuf(&message.dataLength, message.data); 
+        message.id = _can->getCanId();
+        _behavior->receive(message);
     }
-
 }
 
 String SimCan::getHumanName() {
     return "CAN";
 }
 
-void SimCan::serialTransmitMessage(CanMessage msg, uint8_t error) {
+void SimCan::send(CanMessage msg, String serialMsg) {
+    uint8_t error = _can->sendMsgBuf(msg.id, CAN_FRAME, msg.dataLength, msg.data);
+    serialTransmitMessage(msg, error, serialMsg);
+}
+
+void SimCan::serialTransmitMessage(const CanMessage& msg, uint8_t error, String serialMsg) {
     if(DEBUG_SERIAL){
-        Serial.print("CAN MESSAGE SENT - ID: 0x"); 
+        Serial.print(serialMsg +  " - ID: 0x"); 
         Serial.print(msg.id, HEX); 
         Serial.println(" - Status: " + getErrorDescription(error));
     }
 }
 
-void SimCan::serialReceiveMessage(uint16_t id, uint8_t len, CanBuffer buf) {
+void SimCan::serialReceiveMessage(const CanMessage& msg) {
     if(DEBUG_SERIAL){
         Serial.println("-----------------------------");
         Serial.print("CAN MESSAGE RECEIVED - ID: 0x");
-        Serial.println(id, HEX);
+        Serial.println(msg.id, HEX);
 
-        for (int i = 0; i < len; i++) { // print the data
+        for (int i = 0; i < msg.dataLength; i++) { // print the data
             Serial.print("0x");
-            Serial.print(buf[i], HEX);
+            Serial.print(msg.data[i], HEX);
             Serial.print("\t");
         }
         Serial.println();
@@ -92,4 +101,8 @@ String SimCan::getErrorDescription(uint8_t errorCode){
             return "CAN FAIL";
             break;
     }
+}
+
+void Sender::send(CanMessage msg, String serialMsg) {
+    _owner->send(msg, serialMsg);
 }

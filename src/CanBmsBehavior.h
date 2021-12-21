@@ -5,13 +5,14 @@
 
 class CanBmsBehavior : public CanBehavior {
 	public:
-		CanBmsBehavior() : CanBehavior() { }
+		CanBmsBehavior() { }
 
-		void transmit(mcp2515_can* can) { }
+		void transmit() { }
 
-		void receive(mcp2515_can* can);
+		void receive(CanMessage& msg);
+
 	private:
-		void _processBmsRequest(mcp2515_can* can, uint8_t len, uint8_t buf[]);
+		void _processBmsRequest(CanMessage& msg);
 };
 
 #endif
