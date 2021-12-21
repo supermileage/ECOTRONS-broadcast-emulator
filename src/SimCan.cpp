@@ -26,17 +26,28 @@ void SimCan::handle(){
     // Send CAN Messages
     if (millis() - _last_transmit >= CAN_TRANSMIT_INTERVAL){
         _last_transmit = millis();
-        _behavior->transmit();
+        _transmit();
     }
 
     // Listen for CAN messages
     if (_can->checkReceive() == CAN_MSGAVAIL) {
-        CanMessage message;
-        message.dataLength = 0;
-        _can->readMsgBuf(&message.dataLength, message.data); 
-        message.id = _can->getCanId();
-        _behavior->receive(message);
+        _receive();
     }
+}
+
+void SimCan::_transmit() {
+    _behavior->transmit();
+
+}
+
+void SimCan::_receive() {
+    CanMessage message;
+    message.dataLength = 0;
+    _can->readMsgBuf(&message.dataLength, message.data); 
+    message.id = _can->getCanId();
+
+    _behavior->receive(message);
+    _serialReceiveMessage(message);
 }
 
 String SimCan::getHumanName() {
@@ -45,10 +56,10 @@ String SimCan::getHumanName() {
 
 void SimCan::send(CanMessage msg, String serialMsg) {
     uint8_t error = _can->sendMsgBuf(msg.id, CAN_FRAME, msg.dataLength, msg.data);
-    serialTransmitMessage(msg, error, serialMsg);
+    _serialTransmitMessage(msg, error, serialMsg);
 }
 
-void SimCan::serialTransmitMessage(const CanMessage& msg, uint8_t error, String serialMsg) {
+void SimCan::_serialTransmitMessage(const CanMessage& msg, uint8_t error, String serialMsg) {
     if(DEBUG_SERIAL){
         Serial.print(serialMsg +  " - ID: 0x"); 
         Serial.print(msg.id, HEX); 
@@ -56,7 +67,7 @@ void SimCan::serialTransmitMessage(const CanMessage& msg, uint8_t error, String 
     }
 }
 
-void SimCan::serialReceiveMessage(const CanMessage& msg) {
+void SimCan::_serialReceiveMessage(const CanMessage& msg) {
     if(DEBUG_SERIAL){
         Serial.println("-----------------------------");
         Serial.print("CAN MESSAGE RECEIVED - ID: 0x");

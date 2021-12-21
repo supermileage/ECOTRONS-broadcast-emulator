@@ -79,7 +79,7 @@ class SimCan : public Sim {
          * @param msg the message being tranmsmitted
          * @param error the transmission error message from mcp2515_can
          */
-        static void serialTransmitMessage(const CanMessage& msg, uint8_t error, String serialMsg);
+        static void _serialTransmitMessage(const CanMessage& msg, uint8_t error, String serialMsg);
 
         /**
          * @brief Serial output message for when can messages are received
@@ -88,12 +88,16 @@ class SimCan : public Sim {
          * @param len length of received message
          * @param buf data from received message
          */
-        static void serialReceiveMessage(const CanMessage& msg);
+        static void _serialReceiveMessage(const CanMessage& msg);
 
     private:
         mcp2515_can* _can;
         unsigned long long _last_transmit;
         CanBehavior* _behavior;
+
+        void _transmit();
+
+        void _receive();
 };
 
 #endif
