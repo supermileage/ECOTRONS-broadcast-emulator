@@ -1,12 +1,10 @@
 #ifndef CAN_BEHAVIOR_H_
 #define CAN_BEHAVIOR_H_
 
-#include "SimCan.h"
+#include "can.h"
 #include "mcp2515_can.h"
 
-struct CanMessage;
-class SimCan;
-class Sender;
+using namespace can;
 
 /**
  * @brief Defines the set of messages to transmit and how to handle received messages
@@ -22,10 +20,10 @@ class CanBehavior {
 
 		virtual void receive(CanMessage& msg) = 0;
 
-		void setSender(Sender* sender);
+		void setSender(Delegate* sender);
 
 	protected:
-		Sender* _sender;
+		Delegate* _sender;
 };
 
 #endif

@@ -7,7 +7,7 @@ SimCan::SimCan() {
 SimCan::SimCan(CanBehavior* behavior) {
     _can = new mcp2515_can(CAN_CS_PIN);
     _behavior = behavior;
-    _behavior->setSender(new Sender(this));
+    _behavior->setSender(new SimCan::Sender(this));
 }
 
 void SimCan::begin(){
@@ -114,6 +114,6 @@ String SimCan::getErrorDescription(uint8_t errorCode){
     }
 }
 
-void Sender::send(CanMessage msg, String serialMsg) {
+void SimCan::Sender::send(CanMessage msg, String serialMsg) {
     _owner->send(msg, serialMsg);
 }

@@ -1,47 +1,12 @@
 #ifndef _SIM_CAN_H_
 #define _SIM_CAN_H_
 
+#include "can.h"
 #include "Sim.h"
 #include "mcp2515_can.h"
 #include "CanBehavior.h"
 
-// This struct contains all the components of a CAN message. dataLength must be <= 8, 
-// and the first [dataLength] positions of data[] must contain valid data
-typedef uint8_t CanBuffer[8];
-struct CanMessage {
-    uint32_t id;
-    uint8_t dataLength;
-    CanBuffer data;
-};
-
-class SimCan;
-
-// SimCan delegate class sender
-class Sender {
-    public:
-        Sender(SimCan* owner) : _owner(owner) { }
-
-        ~Sender() { }
-
-        void send(CanMessage msg, String serialMsg);
-    
-    private:
-        SimCan* _owner;
-
-};
-
-// Turn on/off serial debugging
-#define DEBUG_SERIAL 1
-
-// CAN Settings
-#define CAN_DEBUG_BAUD_RATE 115200
-#define CAN_CS_PIN          A5
-#define CAN_FRAME           0
-
-// Transmit Settings
-#define CAN_TRANSMIT_INTERVAL 500
-
-class CanBehavior;
+using namespace can;
 
 class SimCan : public Sim {
     public:
@@ -98,6 +63,19 @@ class SimCan : public Sim {
         void _transmit();
 
         void _receive();
+
+        // SimCan delegate class sender
+        class Sender : public Delegate {
+            public:
+                Sender(SimCan* owner) : _owner(owner) { }
+
+                ~Sender() { }
+
+                void send(CanMessage msg, String serialMsg);
+            
+            private:
+                SimCan* _owner;
+        };
 };
 
 #endif
