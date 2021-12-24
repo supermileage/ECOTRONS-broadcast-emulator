@@ -1,4 +1,4 @@
-#include "CanUrbanAccessoriesBehavior.h"
+#include "CanBehaviorUrbanAccessories.h"
 
 const uint16_t ACCESSORIES_CAN_ID = 0x71;
 const CanMessage TEST1 = {ACCESSORIES_CAN_ID, 8, {0x15, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}};
@@ -10,14 +10,14 @@ const int MAX_DATA_LENGTH = 0x8;
 const int MIN_STATUS_ID = 0x0;
 const int MAX_STATUS_ID = 0xB;
 
-void CanUrbanAccessoriesBehavior::transmit() {
+void CanBehaviorUrbanAccessories::transmit() {
 	for(CanMessage msg : URBAN_MSGS) {
 		_randomizeMessage(msg);
         _sender->send(msg, String("CAN MESSAGE SENT"));
     }
 }
 
-void CanUrbanAccessoriesBehavior::_randomizeMessage(CanMessage& message) {
+void CanBehaviorUrbanAccessories::_randomizeMessage(CanMessage& message) {
 	message.dataLength = random(MIN_DATA_LENGTH, MAX_DATA_LENGTH);
 
 	// randomize data byes in can message

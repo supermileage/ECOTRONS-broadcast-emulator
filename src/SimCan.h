@@ -20,7 +20,7 @@ class SimCan : public Sim {
          * 
          * @param serial port for outputting debug data
          **/
-        SimCan(CanBehavior* behavior);
+        SimCan(CanBehavior** behaviors);
 
         void begin();
 
@@ -41,7 +41,7 @@ class SimCan : public Sim {
     private:
         mcp2515_can* _can;
         unsigned long long _last_transmit;
-        CanBehavior* _behavior;
+        CanBehavior** _behaviors;
 
         void _transmit();
         

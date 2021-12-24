@@ -1,4 +1,4 @@
-#include "CanBmsBehavior.h"
+#include "CanBehaviorBms.h"
 
 // BMS Settings
 #define BMS_REQUEST_ID      0x201
@@ -15,13 +15,13 @@ const CanMessage BMS_RESPONSE[] =   {{BMS_RESPONSE_ID, 6, {0x14,0x01,0x00,0x00,0
                                     {BMS_RESPONSE_ID, 5, {0x1B,0x01,0x04,0x01,0x01}},       // Battery Temp #1      - 260
                                     {BMS_RESPONSE_ID, 5, {0x1B,0x01,0x18,0x01,0x02}}};      // Battery Temp #2      - 280
 
-void CanBmsBehavior::receive(CanMessage& msg){
+void CanBehaviorBms::receive(CanMessage& msg) {
     if(msg.id == BMS_REQUEST_ID){
         _processBmsRequest(msg);
     }
 }
 
-void CanBmsBehavior::_processBmsRequest(CanMessage& msg){
+void CanBehaviorBms::_processBmsRequest(CanMessage& msg){
     if(DEBUG_SERIAL) Serial.println("BMS CAN REQUEST RECEIVED!");
     
     // Check to make sure request length is correct

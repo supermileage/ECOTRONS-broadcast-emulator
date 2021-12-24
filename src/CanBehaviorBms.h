@@ -3,9 +3,9 @@
 
 #include "CanBehavior.h"
 
-class CanBmsBehavior : public CanBehavior {
+class CanBehaviorBms : public CanBehavior {
 	public:
-		CanBmsBehavior() { }
+		CanBehaviorBms() { }
 
 		void transmit() { }
 

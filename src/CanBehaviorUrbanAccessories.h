@@ -3,9 +3,9 @@
 
 #include "CanBehavior.h"
 
-class CanUrbanAccessoriesBehavior : public CanBehavior {
+class CanBehaviorUrbanAccessories : public CanBehavior {
 	public:
-		CanUrbanAccessoriesBehavior() { }
+		CanBehaviorUrbanAccessories() { }
 
 		void transmit();
 

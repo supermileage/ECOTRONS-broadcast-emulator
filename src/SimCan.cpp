@@ -4,10 +4,12 @@ SimCan::SimCan() {
     _can = new mcp2515_can(CAN_CS_PIN);
 }
 
-SimCan::SimCan(CanBehavior* behavior) {
+SimCan::SimCan(CanBehavior** behaviors) {
     _can = new mcp2515_can(CAN_CS_PIN);
-    _behavior = behavior;
-    _behavior->setSender(new SimCan::Sender(this));
+    _behaviors = behaviors;
+    for (int i = 0; _behaviors[i]; i++) {
+        _behaviors[i]->setSender(new SimCan::Sender(this));
+    }  
 }
 
 void SimCan::begin(){
@@ -36,7 +38,9 @@ void SimCan::handle(){
 }
 
 void SimCan::_transmit() {
-    _behavior->transmit();
+    for (int i = 0; _behaviors[i]; i++) {
+        _behaviors[i]->transmit();
+    }  
 
 }
 
@@ -46,8 +50,10 @@ void SimCan::_receive() {
     _can->readMsgBuf(&message.dataLength, message.data); 
     message.id = _can->getCanId();
 
-    _behavior->receive(message);
-    _serialReceiveMessage(message);
+    for (int i = 0; _behaviors[i]; i++) {
+        _behaviors[i]->receive(message);
+        _serialReceiveMessage(message);
+    }  
 }
 
 String SimCan::getHumanName() {
