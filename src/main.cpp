@@ -1,12 +1,17 @@
 #include "Sim.h"
 #include "SimEcu.h"
 #include "SimCan.h"
+#include "CanBehaviorBms.h"
+#include "CanBehaviorUrbanAccessories.h"
 
 #define CAN_DEBUG 1
 
 #if CAN_DEBUG
-    SimCan can(&Serial);
-    Sim *simulators[] = {&can};
+    CanBehaviorBms bmsBehavior;
+    CanBehaviorUrbanAccessories urbanBehavior;
+    CanBehavior* behaviors[] = { &bmsBehavior, &urbanBehavior, NULL };
+    SimCan simCan(behaviors);
+    Sim *simulators[] = { &simCan };
 #else
     SimEcu ecu(&Serial);
     SimCan can;
