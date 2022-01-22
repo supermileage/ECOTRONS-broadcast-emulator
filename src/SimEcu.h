@@ -7,6 +7,7 @@
 #define ECU_BAUD_RATE           115200
 #define ECU_PACKET_SIZE         27
 #define ECU_UPDATE_MS           100
+
 #define ECU_HEADER_1            0x80
 #define ECU_HEADER_2            0x8F
 #define ECU_HEADER_3            0xEA
@@ -37,6 +38,11 @@ class SimEcu : public Sim {
          * Randomize data in ECU data fields
          **/
         void _randomizeData();
+
+        /**
+         * Calculate checksum based on all fields
+         **/
+        void _calculateChecksum();
 
 };
 
