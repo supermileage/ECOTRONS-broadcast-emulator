@@ -11,9 +11,9 @@ const CanMessage BMS_RESPONSE[] =   {{BMS_RESPONSE_ID, 6, {0x01,0x14,0x00,0x00,0
                                     {BMS_RESPONSE_ID, 4, {0x01,0x17,0xD8,0x0E}},            // Min Cell Voltage     - 3800
                                     {BMS_RESPONSE_ID, 4, {0x01,0x18,0x93,0x00}},            // Current Status       - DISCHARGING
                                     {BMS_RESPONSE_ID, 6, {0x01,0x1A,0xC0,0x9E,0xE6,0x05}},  // State of Charge      - 99000000
-                                    {BMS_RESPONSE_ID, 5, {0x01,0x1B,0xFA,0x00,0x00}},       // Internal Temperature - 250
-                                    {BMS_RESPONSE_ID, 5, {0x01,0x1B,0x04,0x01,0x01}},       // Battery Temp #1      - 260
-                                    {BMS_RESPONSE_ID, 5, {0x01,0x1B,0x18,0x01,0x02}}};      // Battery Temp #2      - 280
+                                    {BMS_RESPONSE_ID, 6, {0x01,0x1B,0x02,0xFA,0x00,0x00}},       // Internal Temperature - 250
+                                    {BMS_RESPONSE_ID, 6, {0x01,0x1B,0x02,0x04,0x01,0x01}},       // Battery Temp #1      - 260
+                                    {BMS_RESPONSE_ID, 6, {0x01,0x1B,0x02,0x18,0x01,0x02}}};      // Battery Temp #2      - 280
 
 void CanBmsBehavior::receive(CanMessage& msg){
     if(msg.id == BMS_REQUEST_ID){
