@@ -4,7 +4,9 @@
 #include "CanBehaviorBms.h"
 #include "CanBehaviorUrbanAccessories.h"
 
-#define CAN_DEBUG 1
+// Select between: MODE_CAN MODE_ECU
+#define MODE_CAN 
+// #define MODE_ECU
 
 #if CAN_DEBUG
     CanBehaviorBms bmsBehavior;
@@ -14,17 +16,16 @@
     Sim *simulators[] = { &simCan };
 #else
     SimEcu ecu(&Serial);
-    SimCan can;
-    Sim *simulators[] = {&ecu, &can};
+    Sim *simulators[] = {&ecu};
 #endif
 
 void setup() {
-    if(CAN_DEBUG){
+    #ifdef MODE_CAN
         Serial.begin(CAN_DEBUG_BAUD_RATE);
-    }else{
+    #elif defined(MODE_ECU)
         // 115200 baud rate, 8 data bits, no parity, 1 stop bit per datasheet
         Serial.begin(ECU_BAUD_RATE, SERIAL_8N1);
-    }
+    #endif
 
     // Start all simulators
     for(Sim *s : simulators){

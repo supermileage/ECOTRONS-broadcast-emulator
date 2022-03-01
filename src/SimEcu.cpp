@@ -18,10 +18,12 @@ void SimEcu::handle(){
     if (millis() - _ecu_last_update >= ECU_UPDATE_MS) {
         _ecu_last_update = millis();
         _randomizeData();
+        _calculateChecksum();
 
         for (int i = 0; i < ECU_PACKET_SIZE; i++) {
             _serial->write(_ecu_data[i]);
         }
+        
     } 
 }
 
@@ -30,11 +32,23 @@ String SimEcu::getHumanName() {
 }
 
 void SimEcu::_randomizeData() {
-    uint8_t checksum = 0;
+
     for (int i = 5; i < ECU_PACKET_SIZE - 1; i++) {
         uint8_t value = random(0, 255);
         _ecu_data[i] = value;
-        checksum += value;
     }
+
+
+}
+
+void SimEcu::_calculateChecksum() {
+
+    uint8_t checksum = 0;
+
+    for(uint8_t i = 0; i < ECU_PACKET_SIZE - 1; i++) {
+        checksum += _ecu_data[i];
+    }
+
     _ecu_data[ECU_PACKET_SIZE - 1] = checksum;
+
 }
