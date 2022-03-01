@@ -13,7 +13,7 @@ namespace can {
 	#define CAN_FRAME           0
 
 	// Transmit Settings
-	#define CAN_TRANSMIT_INTERVAL 1000
+	#define CAN_TRANSMIT_INTERVAL 3000
 
 
 	// This struct contains all the components of a CAN message. dataLength must be <= 8, 

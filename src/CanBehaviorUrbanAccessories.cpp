@@ -8,7 +8,7 @@ const CanMessage URBAN_MSGS[] = {TEST1, TEST2};
 const int MIN_DATA_LENGTH = 0x2;
 const int MAX_DATA_LENGTH = 0x8;
 const int MIN_STATUS_ID = 0x0;
-const int MAX_STATUS_ID = 0xB;
+const int MAX_STATUS_ID = 0x8;
 
 void CanBehaviorUrbanAccessories::transmit() {
 	for(CanMessage msg : URBAN_MSGS) {

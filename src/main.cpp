@@ -5,13 +5,13 @@
 #include "CanBehaviorUrbanAccessories.h"
 
 // Select between: MODE_CAN MODE_ECU
-#define MODE_CAN 
+#define MODE_CAN
 // #define MODE_ECU
 
-#if CAN_DEBUG
+#ifdef MODE_CAN
     CanBehaviorBms bmsBehavior;
-    CanBehaviorUrbanAccessories urbanBehavior;
-    CanBehavior* behaviors[] = { &bmsBehavior, &urbanBehavior, NULL };
+    // CanBehaviorUrbanAccessories urbanBehavior;
+    CanBehavior* behaviors[] = { &bmsBehavior, NULL };
     SimCan simCan(behaviors);
     Sim *simulators[] = { &simCan };
 #else
