@@ -10,8 +10,8 @@
 
 #ifdef MODE_CAN
     CanBehaviorBms bmsBehavior;
-    // CanBehaviorUrbanAccessories urbanBehavior;
-    CanBehavior* behaviors[] = { &bmsBehavior, NULL };
+    CanBehaviorUrbanAccessories urbanBehavior;
+    CanBehavior* behaviors[] = { &urbanBehavior, &bmsBehavior, NULL };
     SimCan simCan(behaviors);
     Sim *simulators[] = { &simCan };
 #else

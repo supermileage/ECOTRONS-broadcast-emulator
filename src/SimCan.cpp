@@ -49,11 +49,11 @@ void SimCan::_receive() {
     message.dataLength = 0;
     _can->readMsgBuf(&message.dataLength, message.data); 
     message.id = _can->getCanId();
+	_serialReceiveMessage(message);
 
     for (int i = 0; _behaviors[i]; i++) {
         _behaviors[i]->receive(message);
-        _serialReceiveMessage(message);
-    }  
+    }
 }
 
 String SimCan::getHumanName() {
@@ -74,18 +74,18 @@ void SimCan::_serialSendMessage(const CanMessage& msg, uint8_t error, String ser
 }
 
 void SimCan::_serialReceiveMessage(const CanMessage& msg) {
-    // if(DEBUG_SERIAL){
-    //     Serial.println("-----------------------------");
-    //     Serial.print("CAN MESSAGE RECEIVED - ID: 0x");
-    //     Serial.println(msg.id, HEX);
+    if(DEBUG_SERIAL){
+        Serial.println("-----------------------------");
+        Serial.print("CAN MESSAGE RECEIVED - ID: 0x");
+        Serial.println(msg.id, HEX);
 
-    //     for (int i = 0; i < msg.dataLength; i++) { // print the data
-    //         Serial.print("0x");
-    //         Serial.print(msg.data[i], HEX);
-    //         Serial.print("\t");
-    //     }
-    //     Serial.println();
-    // }
+        for (int i = 0; i < msg.dataLength; i++) { // print the data
+            Serial.print("0x");
+            Serial.print(msg.data[i], HEX);
+            Serial.print("\t");
+        }
+        Serial.println();
+    }
 }
 
 String SimCan::getErrorDescription(uint8_t errorCode){

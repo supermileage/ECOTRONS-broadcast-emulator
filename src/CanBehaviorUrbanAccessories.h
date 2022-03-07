@@ -9,10 +9,12 @@ class CanBehaviorUrbanAccessories : public CanBehavior {
 
 		void transmit();
 
-		void receive(CanMessage& msg) { }
+		void receive(CanMessage& msg);
 	
 	protected:
 		void _randomizeMessage(CanMessage& message);
+
+		bool _messageContainsId(CanMessage& message, byte id, byte& index);
 };
 
 #endif
