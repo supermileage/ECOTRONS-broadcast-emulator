@@ -7,22 +7,17 @@ class Sim {
     public:
 
         /**
-         * INTERFACE
+         * ABSTRACT
          * Initialize simulator
          * */
         virtual void begin() = 0;
 
         /**
-         * INTERFACE
+         * ABSTRACT
          * Simulator update handler, run as frequently as possible
          * */
         virtual void handle() = 0;
 
-        /**
-         * INTERFACE
-         * @return Human name for this simulator type
-         * */
-        virtual String getHumanName() = 0;
     private:
 
 };
