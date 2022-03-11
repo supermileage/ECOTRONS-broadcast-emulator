@@ -7,9 +7,9 @@
 #include "CanBehaviorUrbanAccessories.h"
 
 // Select between: MODE_CAN MODE_ECU MODE_FC
-//#define MODE_CAN 
+#define MODE_CAN 
 // #define MODE_ECU 
-#define MODE_FC
+// #define MODE_FC
 
 #ifdef MODE_CAN
     CanBmsBehavior bmsBehavior;
