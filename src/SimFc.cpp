@@ -1,22 +1,20 @@
 #include "SimFc.h"
 
-#define FC_INTERVAL 1000
-SimFc::SimFc(Stream *serial) {
-    _serial = serial;
-}
+#define FC_BAUD_RATE        9600
+#define FC_INTERVAL         1000
+#define FC_STOP_CHARACTER   '*'
 
-void SimFc::begin(){ }
+void SimFc::begin(){ 
+    Serial.begin(FC_BAUD_RATE);
+}
 
 void SimFc::handle(){
-    if(millis() >= _lastTransmit + FC_INTERVAL) {
-        _serial->println("This is a test message");
-        _serial->print("Send at time ");
-        _serial->println(millis());
-        _serial->print("From the FC Simulator!*");
-        _lastTransmit = millis();
+    if(millis() >= _lastUpdate + FC_INTERVAL) {
+        Serial.println("This is a message from the FC emulator");
+        Serial.print("The emulator has been online for ");
+        Serial.print(millis() / 1000);
+        Serial.println("s");
+        Serial.print("*");
+        _lastUpdate = millis();
     }
-}
-
-String SimFc::getHumanName() {
-    return "FC";
 }

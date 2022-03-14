@@ -1,5 +1,4 @@
-#ifndef _SIM_ECU_H_
-#define _SIM_ECU_H_
+#pragma once
 
 #include "Arduino.h"
 #include "Sim.h"
@@ -14,25 +13,23 @@
 #define ECU_DATA_FIELD_LENGTH   0x16
 #define ECU_SERVICE_ID          0x50
 
-class SimEcu : public Sim {
+// Simulator for Proto Engine Computer Unit (ECU)
+class SimProto : public Sim {
     public:
-        /**
-         * Constructor 
-         * 
-         * @param serial port for outputting ECU data
-         **/
-        SimEcu(Stream *serial);
 
-        void begin();
+        /**
+         * CONSTRUCTOR
+         * 
+         * @param updateInterval is the interval at which to update sensor values (ms)
+         * */
+        SimProto(uint32_t updateInterval) : Sim(updateInterval) {}
+
+        void begin() override;
 
         void handle();
 
-        String getHumanName();
-
     private:
-        Stream *_serial;
         uint8_t _ecu_data[ECU_PACKET_SIZE];
-        unsigned long long _ecu_last_update;
 
         /**
          * Randomize data in ECU data fields
@@ -46,4 +43,3 @@ class SimEcu : public Sim {
 
 };
 
-#endif

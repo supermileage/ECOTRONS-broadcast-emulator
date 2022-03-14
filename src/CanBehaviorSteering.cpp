@@ -18,7 +18,7 @@ void CanBehaviorSteering::transmit() {
     uint8_t ready = random(MIN_READY, MAX_READY);
     CanMessage msg = MSG_READY;
     msg.data[0] = ready;
-    _sender->send(msg, String("STEERING READY MESSAGE SENT"));
+    _sender->send(msg, String("STEERING READY"));
 
     msg = MSG_THROTTLE;
 
@@ -26,6 +26,6 @@ void CanBehaviorSteering::transmit() {
         msg.data[0] = random(MIN_THROTTLE, MAX_THROTTLE);
     }
     
-    _sender->send(msg, String("STEERING THROTTLE MESSAGE SENT"));
+    _sender->send(msg, String("STEERING THROTTLE"));
 
 }

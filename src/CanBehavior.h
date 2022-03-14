@@ -1,5 +1,4 @@
-#ifndef CAN_BEHAVIOR_H_
-#define CAN_BEHAVIOR_H_
+#pragma once
 
 #include "can.h"
 #include "mcp2515_can.h"
@@ -25,5 +24,3 @@ class CanBehavior {
 	protected:
 		Delegate* _sender;
 };
-
-#endif

@@ -13,7 +13,7 @@ const int MAX_STATUS_ID = 0xB;
 void CanBehaviorUrbanAccessories::transmit() {
 	for(CanMessage msg : URBAN_MSGS) {
 		_randomizeMessage(msg);
-        _sender->send(msg, String("CAN MESSAGE SENT"));
+        _sender->send(msg, String("ACC"));
     }
 }
 
