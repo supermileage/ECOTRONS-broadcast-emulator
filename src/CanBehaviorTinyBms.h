@@ -1,5 +1,4 @@
-#ifndef CAN_BMS_BEHAVIOR_H_
-#define CAN_BMS_BEHAVIOR_H_
+#pragma once
 
 #include "CanBehavior.h"
 
@@ -53,5 +52,3 @@ class CanBehaviorTinyBms : public CanBehavior {
 		 **/
 		void _packInt32(uint8_t* dataPtr, int32_t value);
 };
-
-#endif
