@@ -1,31 +1,22 @@
-#ifndef _SIM_FC_H_
-#define _SIM_FC_H_
+#pragma once
 
 #include "Arduino.h"
 #include "Sim.h"
 
-#define FC_BAUD_RATE        9600
-#define FC_STOP_CHARACTER   '*'
-
+// Simulator for Fuel-Cell Controller
 class SimFc : public Sim {
+
     public:
+
         /**
-         * Constructor 
+         * CONSTRUCTOR
          * 
-         * @param serial port for outputting ECU data
-         **/
-        SimFc(Stream *serial);
+         * @param updateInterval is the interval at which to update sensor values (ms)
+         * */
+        SimFc(uint32_t updateInterval) : Sim(updateInterval) {}
 
-        void begin();
+        void begin() override;
 
-        void handle();
-
-        String getHumanName();
-
-    private:
-        Stream *_serial;
-        unsigned long _lastTransmit = 0;
+        void handle() override;
 
 };
-
-#endif
