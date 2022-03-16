@@ -6,10 +6,11 @@
 // Can Behaviors (for Urban only)
 #include "CanBehaviorUrbanAccessories.h"
 #include "CanBehaviorTinyBms.h"
+#include "CanBehaviorOrionBms.h"
 #include "CanBehaviorSteering.h"
 
 // SELECT VEHICLE: PROTO URBAN FC 
-#define PROTO
+#define URBAN
 
 #ifdef PROTO
     SimProto sim(100);
@@ -26,6 +27,7 @@ void setup() {
     #ifdef URBAN
         sim.addBehavior(new CanBehaviorUrbanAccessories());
         sim.addBehavior(new CanBehaviorTinyBms());
+        sim.addBehavior(new CanBehaviorOrionBms());
         sim.addBehavior(new CanBehaviorSteering());
     #endif
 

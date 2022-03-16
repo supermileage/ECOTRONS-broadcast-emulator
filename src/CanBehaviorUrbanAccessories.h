@@ -1,5 +1,4 @@
-#ifndef URBAN_ACCESSORIES_BEHAVIOR_H_
-#define URBAN_ACCESSORIES_BEHAVIOR_H_
+#pragma once
 
 #include "CanBehavior.h"
 
@@ -14,5 +13,3 @@ class CanBehaviorUrbanAccessories : public CanBehavior {
 	protected:
 		void _randomizeMessage(CanMessage& message);
 };
-
-#endif
