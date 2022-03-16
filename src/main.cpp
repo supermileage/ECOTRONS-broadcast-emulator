@@ -1,27 +1,3 @@
-<<<<<<< HEAD
-#include "Sim.h"
-#include "SimEcu.h"
-#include "SimCan.h"
-#include "CanBehaviorBms.h"
-#include "CanBehaviorUrbanAccessories.h"
-#include "CanBehaviorSteeringHelper.h"
-
-// Select between: MODE_CAN MODE_ECU
-#define MODE_CAN
-// #define MODE_ECU
-
-#ifdef MODE_CAN
-    CanBehaviorBms bmsBehavior;
-    CanBehaviorUrbanAccessories urbanBehavior;
-	CanBehaviorSteeringHelper steeringCanBehavior;
-    // CanBehavior* behaviors[] = { &urbanBehavior, &bmsBehavior, NULL };
-	CanBehavior* behaviors[] = { &steeringCanBehavior, NULL };
-    SimCan simCan(behaviors);
-    Sim *simulators[] = { &simCan };
-#else
-    SimEcu ecu(&Serial);
-    Sim *simulators[] = {&ecu};
-=======
 // Simulators
 #include "SimProto.h"
 #include "SimUrban.h"
@@ -42,7 +18,6 @@
     SimUrban sim(250);
 #elif defined(FC)
     SimFc sim(1000);
->>>>>>> master
 #endif
 
 void setup() {

@@ -5,14 +5,6 @@
 #define CAN_SPEED               CAN_500KBPS
 #define CAN_CONTROLLER_SPEED    MCP_8MHz
 
-<<<<<<< HEAD:src/SimCan.cpp
-SimCan::SimCan(CanBehavior** behaviors) {
-    _can = new mcp2515_can(CAN_CS_PIN);
-    _behaviors = behaviors;
-    for (int i = 0; _behaviors[i]; i++) {
-        _behaviors[i]->setSender(new SimCan::Sender(this));
-    }  
-=======
 #define DEBUG_MSG_RECEIVE       1
 #define DEBUG_MSG_SEND          1
 
@@ -22,7 +14,6 @@ void SimUrban::addBehavior(CanBehavior* behavior) {
         counter++;
     }
     _behaviors[counter] = behavior;
->>>>>>> master:src/SimUrban.cpp
 }
 
 void SimUrban::begin(){
@@ -58,9 +49,6 @@ void SimUrban::handle(){
     }
 }
 
-<<<<<<< HEAD:src/SimCan.cpp
-void SimCan::_transmit() {
-=======
 void SimUrban::send(CanMessage msg, String serialMsg) {
     uint8_t error = _can->sendMsgBuf(msg.id, CAN_FRAME, msg.dataLength, msg.data);
     
@@ -80,7 +68,6 @@ void SimUrban::send(CanMessage msg, String serialMsg) {
 }
 
 void SimUrban::_transmit() {
->>>>>>> master:src/SimUrban.cpp
     for (int i = 0; _behaviors[i]; i++) {
         _behaviors[i]->transmit();
     }  
@@ -92,45 +79,10 @@ void SimUrban::_receive() {
     message.dataLength = 0;
     _can->readMsgBuf(&message.dataLength, message.data); 
     message.id = _can->getCanId();
-	_serialReceiveMessage(message);
 
     for (int i = 0; _behaviors[i]; i++) {
         _behaviors[i]->receive(message);
     }
-<<<<<<< HEAD:src/SimCan.cpp
-}
-
-String SimCan::getHumanName() {
-    return "CAN";
-}
-
-void SimCan::send(CanMessage msg, String serialMsg) {
-    uint8_t error = _can->sendMsgBuf(msg.id, CAN_FRAME, msg.dataLength, msg.data);
-    _serialSendMessage(msg, error, serialMsg);
-}
-
-void SimCan::_serialSendMessage(const CanMessage& msg, uint8_t error, String serialMsg) {
-    // if(DEBUG_SERIAL){
-    //     Serial.print(serialMsg +  " - ID: 0x"); 
-    //     Serial.print(msg.id, HEX); 
-    //     Serial.println(" - Status: " + getErrorDescription(error));
-    // }
-}
-
-void SimCan::_serialReceiveMessage(const CanMessage& msg) {
-    // if(DEBUG_SERIAL){
-    //     Serial.println("-----------------------------");
-    //     Serial.print("CAN MESSAGE RECEIVED - ID: 0x");
-    //     Serial.println(msg.id, HEX);
-
-    //     for (int i = 0; i < msg.dataLength; i++) { // print the data
-    //         Serial.print("0x");
-    //         Serial.print(msg.data[i], HEX);
-    //         Serial.print("\t");
-    //     }
-    //     Serial.println();
-    // }
-=======
 
     if(DEBUG_MSG_RECEIVE) {
 
@@ -146,7 +98,6 @@ void SimCan::_serialReceiveMessage(const CanMessage& msg) {
         Serial.println();
     }
 
->>>>>>> master:src/SimUrban.cpp
 }
 
 String SimUrban::getErrorDescription(uint8_t errorCode){

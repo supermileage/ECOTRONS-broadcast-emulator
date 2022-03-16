@@ -29,7 +29,6 @@ void CanBehaviorSteeringHelper::receive(CanMessage& msg) {
 	if (msg.id == CAN_STEERING_THROTTLE) {
 		++_receivedMessageCount;
 	}
-	every second, we tally throttle updates we've received from steering
 	if (millis() - _lastReceiveTime >= TIME_TO_COUNT_MESSAGES) {
 		_lastReceiveTime = millis();
 		Serial.println("Received " + String(_receivedMessageCount) + " messages in the past second");
