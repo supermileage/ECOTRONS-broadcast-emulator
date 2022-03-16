@@ -1,12 +1,10 @@
-#ifndef _CAN_NAMESPACE_H_
-#define _CAN_NAMESPACE_H_
+#pragma once
 
 #include "Arduino.h"
 
 namespace can {
-	// Turn on/off serial debugging
-	#define DEBUG_SERIAL 1
 
+<<<<<<< HEAD
 	// CAN Settings
 	#define CAN_DEBUG_BAUD_RATE 115200
 	#define CAN_CS_PIN          A5
@@ -15,6 +13,9 @@ namespace can {
 	// Transmit Settings
 	#define CAN_TRANSMIT_INTERVAL 250
 
+=======
+	#define CAN_FRAME 0x0
+>>>>>>> master
 
 	// This struct contains all the components of a CAN message. dataLength must be <= 8, 
 	// and the first [dataLength] positions of data[] must contain valid data
@@ -34,5 +35,3 @@ namespace can {
         	virtual void send(CanMessage msg, String serialMsg) = 0;
 	};
 }
-
-#endif

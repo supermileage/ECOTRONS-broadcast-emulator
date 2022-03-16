@@ -1,30 +1,32 @@
-#ifndef _SIM_H_
-#define _SIM_H_
+#pragma once
 
 #include "Arduino.h"
 
+// Simulator Abstract class
 class Sim {
     public:
 
         /**
-         * INTERFACE
+         * CONSTRUCTOR
+         * 
+         * @param updateInterval is the interval at which to update sensor values (ms)
+         * */
+        Sim(uint32_t updateInterval) : _updateInterval(updateInterval) {}
+
+        /**
+         * ABSTRACT
          * Initialize simulator
          * */
         virtual void begin() = 0;
 
         /**
-         * INTERFACE
+         * ABSTRACT
          * Simulator update handler, run as frequently as possible
          * */
         virtual void handle() = 0;
 
-        /**
-         * INTERFACE
-         * @return Human name for this simulator type
-         * */
-        virtual String getHumanName() = 0;
-    private:
+    protected:
+        uint32_t _updateInterval;
+        uint32_t _lastUpdate = 0;
 
 };
-
-#endif

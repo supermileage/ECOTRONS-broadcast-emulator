@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include "Sim.h"
 #include "SimEcu.h"
 #include "SimCan.h"
@@ -20,30 +21,49 @@
 #else
     SimEcu ecu(&Serial);
     Sim *simulators[] = {&ecu};
+=======
+// Simulators
+#include "SimProto.h"
+#include "SimUrban.h"
+#include "SimFc.h"
+
+// Can Behaviors (for Urban only)
+#include "CanBehaviorUrbanAccessories.h"
+#include "CanBehaviorTinyBms.h"
+#include "CanBehaviorOrionBms.h"
+#include "CanBehaviorSteering.h"
+
+// SELECT VEHICLE: PROTO URBAN FC 
+#define URBAN
+
+#ifdef PROTO
+    SimProto sim(100);
+#elif defined(URBAN)
+    SimUrban sim(250);
+#elif defined(FC)
+    SimFc sim(1000);
+>>>>>>> master
 #endif
 
 void setup() {
-    #ifdef MODE_CAN
-        Serial.begin(CAN_DEBUG_BAUD_RATE);
-    #elif defined(MODE_ECU)
-        // 115200 baud rate, 8 data bits, no parity, 1 stop bit per datasheet
-        Serial.begin(ECU_BAUD_RATE, SERIAL_8N1);
+
+    randomSeed(analogRead(A0));
+
+    #ifdef URBAN
+        sim.addBehavior(new CanBehaviorUrbanAccessories());
+        sim.addBehavior(new CanBehaviorTinyBms());
+        sim.addBehavior(new CanBehaviorOrionBms());
+        sim.addBehavior(new CanBehaviorSteering());
     #endif
 
-    // Start all simulators
-    for(Sim *s : simulators){
-        s->begin();
-    }
+    sim.begin();
 
 }
 
 
 void loop() {
 
-    // Run all simulators
-    for(Sim *s : simulators){
-        s->handle();
-    }
+    sim.handle();
 
 }
 
