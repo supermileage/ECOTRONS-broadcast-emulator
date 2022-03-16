@@ -3,6 +3,7 @@
 #include "SimCan.h"
 #include "CanBehaviorBms.h"
 #include "CanBehaviorUrbanAccessories.h"
+#include "CanBehaviorSteeringHelper.h"
 
 // Select between: MODE_CAN MODE_ECU
 #define MODE_CAN
@@ -11,7 +12,9 @@
 #ifdef MODE_CAN
     CanBehaviorBms bmsBehavior;
     CanBehaviorUrbanAccessories urbanBehavior;
-    CanBehavior* behaviors[] = { &urbanBehavior, &bmsBehavior, NULL };
+	CanBehaviorSteeringHelper steeringCanBehavior;
+    // CanBehavior* behaviors[] = { &urbanBehavior, &bmsBehavior, NULL };
+	CanBehavior* behaviors[] = { &steeringCanBehavior, NULL };
     SimCan simCan(behaviors);
     Sim *simulators[] = { &simCan };
 #else

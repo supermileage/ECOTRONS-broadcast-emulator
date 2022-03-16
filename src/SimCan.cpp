@@ -66,26 +66,26 @@ void SimCan::send(CanMessage msg, String serialMsg) {
 }
 
 void SimCan::_serialSendMessage(const CanMessage& msg, uint8_t error, String serialMsg) {
-    if(DEBUG_SERIAL){
-        Serial.print(serialMsg +  " - ID: 0x"); 
-        Serial.print(msg.id, HEX); 
-        Serial.println(" - Status: " + getErrorDescription(error));
-    }
+    // if(DEBUG_SERIAL){
+    //     Serial.print(serialMsg +  " - ID: 0x"); 
+    //     Serial.print(msg.id, HEX); 
+    //     Serial.println(" - Status: " + getErrorDescription(error));
+    // }
 }
 
 void SimCan::_serialReceiveMessage(const CanMessage& msg) {
-    if(DEBUG_SERIAL){
-        Serial.println("-----------------------------");
-        Serial.print("CAN MESSAGE RECEIVED - ID: 0x");
-        Serial.println(msg.id, HEX);
+    // if(DEBUG_SERIAL){
+    //     Serial.println("-----------------------------");
+    //     Serial.print("CAN MESSAGE RECEIVED - ID: 0x");
+    //     Serial.println(msg.id, HEX);
 
-        for (int i = 0; i < msg.dataLength; i++) { // print the data
-            Serial.print("0x");
-            Serial.print(msg.data[i], HEX);
-            Serial.print("\t");
-        }
-        Serial.println();
-    }
+    //     for (int i = 0; i < msg.dataLength; i++) { // print the data
+    //         Serial.print("0x");
+    //         Serial.print(msg.data[i], HEX);
+    //         Serial.print("\t");
+    //     }
+    //     Serial.println();
+    // }
 }
 
 String SimCan::getErrorDescription(uint8_t errorCode){
