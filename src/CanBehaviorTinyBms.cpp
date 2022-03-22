@@ -1,10 +1,7 @@
 #include "CanBehaviorTinyBms.h"
 
 // BMS Settings
-#define BMS_REQUEST_ID              0x201
-#define BMS_RESPONSE_ID             0x241
 #define BMS_REQUEST_LENGTH          8
-
 #define BMS_RESPONSE_DATA_OFFSET    2
 
 #define PARAM_ID_EVENTS             0x11
@@ -39,7 +36,7 @@ const uint8_t PARAM_LENGTHS[NUM_PARAM_IDS] = {
     6};
 
 void CanBehaviorTinyBms::receive(CanMessage& msg){
-    if(msg.id == BMS_REQUEST_ID){
+    if(msg.id == CAN_TINYBMS_REQUEST){
         _processTinyBmsRequest(msg);
     }
 }
@@ -60,7 +57,7 @@ void CanBehaviorTinyBms::_processTinyBmsRequest(CanMessage& msg){
             delay(random(0,4));
 
             CanMessage reply;
-            reply.id = BMS_RESPONSE_ID;
+            reply.id = CAN_TINYBMS_RESPONSE;
             reply.dataLength = PARAM_LENGTHS[i];
             reply.data[0] = 0x01;
             reply.data[1] = PARAM_IDS[i];

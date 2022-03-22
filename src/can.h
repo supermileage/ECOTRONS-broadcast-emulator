@@ -1,5 +1,6 @@
 #pragma once
 
+#include "can_common.h"
 #include "Arduino.h"
 
 namespace can {

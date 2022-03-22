@@ -5,8 +5,8 @@
 #define CAN_SPEED               CAN_500KBPS
 #define CAN_CONTROLLER_SPEED    MCP_8MHz
 
-#define DEBUG_MSG_RECEIVE       1
-#define DEBUG_MSG_SEND          1
+#define DEBUG_MSG_RECEIVE       0
+#define DEBUG_MSG_SEND          0
 
 void SimUrban::addBehavior(CanBehavior* behavior) {
     uint8_t counter = 0;
@@ -14,6 +14,17 @@ void SimUrban::addBehavior(CanBehavior* behavior) {
         counter++;
     }
     _behaviors[counter] = behavior;
+	Serial.println("Successfully added behavior at index: " + String(counter));
+}
+
+void SimUrban::removeBehavior(CanBehavior* behavior) {
+	for (int i = 0; _behaviors[i]; i++) {
+		if (_behaviors[i] == behavior) {
+			_behaviors[i] = NULL;
+			Serial.println("Successfully removed behavior at index: " + String(i));
+			break;
+		}
+	}
 }
 
 void SimUrban::begin(){

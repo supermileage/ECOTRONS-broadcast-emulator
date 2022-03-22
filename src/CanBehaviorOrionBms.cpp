@@ -1,10 +1,5 @@
 #include "CanBehaviorOrionBms.h"
 
-#define CAN_ID_ORIONBMS_STATUS  0x280
-#define CAN_ID_ORIONBMS_PACK    0x281
-#define CAN_ID_ORIONBMS_CELL    0x282
-#define CAN_ID_ORIONBMS_TEMP    0x283
-
 #define CAN_MSGLENGTH_ORIONBMS  8
 
 void CanBehaviorOrionBms::transmit() {
@@ -12,22 +7,22 @@ void CanBehaviorOrionBms::transmit() {
     CanMessage msg;
     msg.dataLength = CAN_MSGLENGTH_ORIONBMS;
 
-    msg.id = CAN_ID_ORIONBMS_STATUS;
+    msg.id = CAN_ORIONBMS_STATUS;
     _generateMsgStatus(msg.data);
     _generateMsgChecksum(msg.data);
     _sender->send(msg, "ORIONBMS STATUS");
 
-    msg.id = CAN_ID_ORIONBMS_PACK;
+    msg.id = CAN_ORIONBMS_PACK;
     _generateMsgPack(msg.data);
     _generateMsgChecksum(msg.data);
     _sender->send(msg, "ORIONBMS PACK");
 
-    msg.id = CAN_ID_ORIONBMS_CELL;
+    msg.id = CAN_ORIONBMS_CELL;
     _generateMsgCell(msg.data);
     _generateMsgChecksum(msg.data);
     _sender->send(msg, "ORIONBMS CELL");
 
-    msg.id = CAN_ID_ORIONBMS_TEMP;
+    msg.id = CAN_ORIONBMS_TEMP;
     _generateMsgTemp(msg.data);
     _generateMsgChecksum(msg.data);
     _sender->send(msg, "ORIONBMS TEMP");

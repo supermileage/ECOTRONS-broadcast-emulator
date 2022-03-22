@@ -28,6 +28,8 @@ class SimUrban : public Sim {
          **/
         void addBehavior(CanBehavior* behavior);
 
+		void removeBehavior(CanBehavior* behavior);
+
         void begin();
 
         void handle();
