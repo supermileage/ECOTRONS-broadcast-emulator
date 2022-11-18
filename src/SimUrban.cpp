@@ -1,7 +1,7 @@
 #include "SimUrban.h"
 
-#define CAN_DEBUG_BAUD_RATE     115200
-#define CAN_CS_PIN              A5
+#define CAN_DEBUG_BAUD_RATE     9600
+#define CAN_CS_PIN              A0
 #define CAN_SPEED               CAN_500KBPS
 #define CAN_CONTROLLER_SPEED    MCP_8MHz
 

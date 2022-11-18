@@ -119,7 +119,6 @@ void CanBehaviorTinyBms::_randomizeValues(uint8_t paramId, uint8_t* dataPtr) {
             break;
         }
         case PARAM_ID_TEMP: {
-            Serial.println("TEMPERATURE!");
             // Range: -10.0 - 100.0
             int32_t value = random(-100, 1000);
             _packInt16(dataPtr + 1, value);

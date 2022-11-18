@@ -10,7 +10,7 @@
 #include "CanBehaviorSteering.h"
 
 // SELECT VEHICLE: PROTO URBAN FC 
-#define URBAN
+#define FC
 
 #ifdef PROTO
     SimProto sim(100);
@@ -21,6 +21,11 @@
 	#define INTERVAL 2000
 	CanBehavior* tiny;
 	CanBehavior* orion;
+	CanBehavior* steering;
+	CanBehavior* accessories;
+	orion = new CanBehaviorOrionBms();
+	steering = new CanBehaviorSteering();
+	accessories = new CanBehaviorUrbanAccessories();
 	uint64_t lastTime = 0;
 	bool currentIsTiny = true;
 #elif defined(FC)
@@ -28,41 +33,24 @@
 #endif
 
 void setup() {
-    randomSeed(analogRead(A0));
+    randomSeed(analogRead(A1));
 
-	tiny = new CanBehaviorTinyBms();
-	orion = new CanBehaviorOrionBms();
+
 
     #ifdef URBAN
-        // sim.addBehavior(new CanBehaviorUrbanAccessories());
-        // sim.addBehavior(new CanBehaviorTinyBms());
-        sim.addBehavior(tiny);
 		sim.addBehavior(orion);
-        // sim.addBehavior(new CanBehaviorSteering());
+		sim.addBehavior(steering);
+		sim.addBehavior(accessories);
     #endif
 
     sim.begin();
-	sim.removeBehavior(orion);
+
 }
 
 
 void loop() {
 
     sim.handle();
-
-	if (millis() > lastTime + INTERVAL) {
-		if (currentIsTiny) {
-			sim.removeBehavior(tiny);
-			sim.addBehavior(orion);
-			currentIsTiny = false;
-		} else {
-			sim.removeBehavior(orion);
-			sim.addBehavior(tiny);
-			currentIsTiny = true;
-		}
-		lastTime = millis();
-	}
-
 }
 
 

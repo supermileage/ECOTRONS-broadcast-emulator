@@ -1,20 +1,21 @@
 #include "SimFc.h"
+#include "String.h"
 
 #define FC_BAUD_RATE        9600
-#define FC_INTERVAL         1000
-#define FC_STOP_CHARACTER   '*'
+#define NUM_FUEL_CELLS      18
 
 void SimFc::begin(){ 
     Serial.begin(FC_BAUD_RATE);
 }
 
 void SimFc::handle(){
-    if(millis() >= _lastUpdate + FC_INTERVAL) {
-        Serial.println("This is a message from the FC emulator");
-        Serial.print("The emulator has been online for ");
-        Serial.print(millis() / 1000);
-        Serial.println("s");
-        Serial.print("*");
+    if(millis() >= _lastUpdate + _updateInterval) {
+        String updateString = "";
+        for (int i = 0; i < NUM_FUEL_CELLS; i++) {
+            updateString.concat(String((float)random(-512, 511) / 256.0f, 2) + String(' '));
+        }
+        updateString.concat("\n");
+        Serial.write(updateString.c_str());
         _lastUpdate = millis();
     }
 }
