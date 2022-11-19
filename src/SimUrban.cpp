@@ -35,7 +35,6 @@ void SimUrban::begin(){
     SPI.begin();
 
     _can = new mcp2515_can(CAN_CS_PIN);
-
     uint8_t error = _can->begin(CAN_SPEED, CAN_CONTROLLER_SPEED);
 
     Serial.println("CAN Init Status: " + getErrorDescription(error));
