@@ -11,7 +11,7 @@
 #include "CanBehaviorBmsSwitcher.h"
 
 // SELECT VEHICLE: PROTO URBAN FC 
-#define URBAN
+#define FC
 
 #ifdef PROTO
     SimProto sim(100);
