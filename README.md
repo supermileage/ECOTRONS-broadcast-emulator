@@ -23,4 +23,8 @@ The byte ordering is in big endian.
 
 ## CAN Simulator (SimCan)
 
-Currently supports sending out 2 messages on fixed interval. 
+Multiple CanBehavior classes model behavior of Urban's different can devices: orion and tinyBms, steering and accessories
+
+## FC Simulator
+
+Simulates serial messages sent from FC control board (with message headers specified in fcp-common submodule)
