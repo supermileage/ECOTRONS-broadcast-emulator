@@ -8,9 +8,10 @@
 #include "CanBehaviorTinyBms.h"
 #include "CanBehaviorOrionBms.h"
 #include "CanBehaviorSteering.h"
+#include "CanBehaviorBmsSwitcher.h"
 
 // SELECT VEHICLE: PROTO URBAN FC 
-#define URBAN
+#define FC
 
 #ifdef PROTO
     SimProto sim(100);
@@ -19,50 +20,26 @@
 
 	// For testing BmsManager
 	#define INTERVAL 2000
-	CanBehavior* tiny;
-	CanBehavior* orion;
-	uint64_t lastTime = 0;
-	bool currentIsTiny = true;
+	CanBehaviorTinyBms tiny;
+	CanBehaviorOrionBms orion;
+	CanBehaviorBmsSwitcher switcher(&orion, &tiny);
+	// CanBehaviorUrbanAccessories accessories;
 #elif defined(FC)
     SimFc sim(1000);
 #endif
 
 void setup() {
-    randomSeed(analogRead(A0));
-
-	tiny = new CanBehaviorTinyBms();
-	orion = new CanBehaviorOrionBms();
-
+    randomSeed(analogRead(A1));
     #ifdef URBAN
-        // sim.addBehavior(new CanBehaviorUrbanAccessories());
-        // sim.addBehavior(new CanBehaviorTinyBms());
-        sim.addBehavior(tiny);
-		sim.addBehavior(orion);
-        // sim.addBehavior(new CanBehaviorSteering());
+		sim.addBehavior(&switcher);
+		// sim.addBehavior(&accessories);
     #endif
 
     sim.begin();
-	sim.removeBehavior(orion);
 }
 
-
 void loop() {
-
     sim.handle();
-
-	if (millis() > lastTime + INTERVAL) {
-		if (currentIsTiny) {
-			sim.removeBehavior(tiny);
-			sim.addBehavior(orion);
-			currentIsTiny = false;
-		} else {
-			sim.removeBehavior(orion);
-			sim.addBehavior(tiny);
-			currentIsTiny = true;
-		}
-		lastTime = millis();
-	}
-
 }
 
 

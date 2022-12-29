@@ -1,7 +1,7 @@
 #include "SimUrban.h"
 
-#define CAN_DEBUG_BAUD_RATE     115200
-#define CAN_CS_PIN              A5
+#define CAN_DEBUG_BAUD_RATE     9600
+#define CAN_CS_PIN              A0
 #define CAN_SPEED               CAN_500KBPS
 #define CAN_CONTROLLER_SPEED    MCP_8MHz
 
@@ -35,7 +35,6 @@ void SimUrban::begin(){
     SPI.begin();
 
     _can = new mcp2515_can(CAN_CS_PIN);
-
     uint8_t error = _can->begin(CAN_SPEED, CAN_CONTROLLER_SPEED);
 
     Serial.println("CAN Init Status: " + getErrorDescription(error));
