@@ -19,7 +19,7 @@ class CanBehavior {
 
 		virtual void receive(CanMessage& msg) = 0;
 
-		void setSender(Delegate* sender);
+		virtual void setSender(Delegate* sender);
 
 	protected:
 		Delegate* _sender;

@@ -8,9 +8,10 @@
 #include "CanBehaviorTinyBms.h"
 #include "CanBehaviorOrionBms.h"
 #include "CanBehaviorSteering.h"
+#include "CanBehaviorBmsSwitcher.h"
 
 // SELECT VEHICLE: PROTO URBAN FC 
-#define FC
+#define URBAN
 
 #ifdef PROTO
     SimProto sim(100);
@@ -21,8 +22,8 @@
 	#define INTERVAL 2000
 	CanBehaviorTinyBms tiny;
 	CanBehaviorOrionBms orion;
-	CanBehaviorSteering steering;
-	CanBehaviorUrbanAccessories accessories;
+	CanBehaviorBmsSwitcher switcher(&orion, &tiny);
+	// CanBehaviorUrbanAccessories accessories;
 #elif defined(FC)
     SimFc sim(1000);
 #endif
@@ -30,9 +31,8 @@
 void setup() {
     randomSeed(analogRead(A1));
     #ifdef URBAN
-		sim.addBehavior(&orion);
-		sim.addBehavior(&steering);
-		sim.addBehavior(&accessories);
+		sim.addBehavior(&switcher);
+		// sim.addBehavior(&accessories);
     #endif
 
     sim.begin();
