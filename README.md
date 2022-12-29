@@ -25,6 +25,6 @@ The byte ordering is in big endian.
 
 Multiple CanBehavior classes model behavior of Urban's different can devices: orion and tinyBms, steering and accessories
 
-## FC Simulator
+## FC Simulator (SimFC)
 
 Simulates serial messages sent from FC control board (with message headers specified in fcp-common submodule)
