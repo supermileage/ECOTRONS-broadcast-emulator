@@ -1,3 +1,6 @@
 [submodule "lib/can-common"]
 	path = lib/can-common
 	url = https://github.com/supermileage/can-common.git
+[submodule "lib/fcp-common"]
+	path = lib/fcp-common
+	url = git@github.com:supermileage/fcp-common.git

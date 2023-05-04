@@ -1,17 +1,11 @@
 #include "SimFc.h"
+#include "fcp-common.h"
 #include "String.h"
 
 #define FC_BAUD_RATE        9600
 #define NUM_FUEL_CELLS      17
 #define NUM_HEADERS			6
 #define BUFFER_SIZE			NUM_HEADERS + NUM_FUEL_CELLS * 2
-
-#define FC_HEADER_0 0x7
-#define FC_HEADER_1 0xD
-#define FC_HEADER_2 0x11
-#define FC_HEADER_3 0x17
-#define FC_HEADER_4 0x1D
-#define FC_HEADER_5 0x1F
 
 void SimFc::begin(){ 
     Serial.begin(FC_BAUD_RATE);
