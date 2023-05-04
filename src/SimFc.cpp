@@ -5,14 +5,14 @@
 #define FC_BAUD_RATE        9600
 #define NUM_FUEL_CELLS      17
 #define NUM_HEADERS			6
-#define BUFFER_SIZE			NUM_HEADERS + NUM_FUEL_CELLS * 2
+#define BUFFER_SIZE			(NUM_HEADERS + NUM_FUEL_CELLS * 2)
 
 void SimFc::begin(){ 
     Serial.begin(FC_BAUD_RATE);
 }
 
 void SimFc::handle(){
-	int8_t dataBuffer[NUM_HEADERS + NUM_FUEL_CELLS * 2] = { 0 };
+	int8_t dataBuffer[BUFFER_SIZE] = { 0 };
     if (millis() >= _lastUpdate + _updateInterval) {
 		dataBuffer[0] = FC_HEADER_0;
 		dataBuffer[1] = FC_HEADER_1;
