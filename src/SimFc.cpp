@@ -1,6 +1,5 @@
 #include "SimFc.h"
 #include "fcp-common.h"
-#include "String.h"
 
 #define FC_BAUD_RATE        9600
 #define NUM_FUEL_CELLS      17
